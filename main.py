@@ -21,7 +21,7 @@ filename = os.path.join('./sample.tif')
 
 sample = io.imread(filename)
 
-image = plt.imread('sample2.tif')
+image = plt.imread('sample.tif')
 image.shape
 plt.imshow(image)
 
@@ -38,7 +38,7 @@ plt.imshow(gray, cmap='gray')
 
 io.imsave("sample_output.png", gray)
 
-
+gray = rgb2gray(image)
 gray_r = gray.reshape(gray.shape[0]*gray.shape[1])
 for i in range(gray_r.shape[0]):
     if gray_r[i] > gray_r.mean():
