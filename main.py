@@ -17,7 +17,7 @@ import utils
 import matplotlib.pyplot as plt
 from scipy import ndimage
 
-filename = 'sample'
+filename = 'sample2'
 file_ext = '.tif'
 output_file_ext = '.png'
 
