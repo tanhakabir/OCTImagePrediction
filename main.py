@@ -17,11 +17,11 @@ import utils
 import matplotlib.pyplot as plt
 from scipy import ndimage
 
-filename = os.path.join('./sample.tif') 
+filename = 'sample'
+file_ext = '.tif'
+output_file_ext = '.png'
 
-sample = io.imread(filename)
-
-image = plt.imread('sample.tif')
+image = plt.imread(filename + file_ext)
 image.shape
 plt.imshow(image)
 
@@ -36,7 +36,7 @@ gray = gray_r.reshape(gray.shape[0],gray.shape[1])
 plt.imshow(gray, cmap='gray')
 
 
-io.imsave("sample_output.png", gray)
+io.imsave(filename + '_output1' + output_file_ext, gray)
 
 gray = rgb2gray(image)
 gray_r = gray.reshape(gray.shape[0]*gray.shape[1])
@@ -51,4 +51,4 @@ for i in range(gray_r.shape[0]):
         gray_r[i] = 0
 gray = gray_r.reshape(gray.shape[0],gray.shape[1])
 
-io.imsave("sample_output2.png", gray)
+io.imsave(filename + '_output2' + output_file_ext, gray)
