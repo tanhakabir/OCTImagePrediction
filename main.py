@@ -1,5 +1,7 @@
 import skimage
 import os
+import utils
+import processing
 
 from skimage import io
 
@@ -13,67 +15,26 @@ from skimage.feature import canny
 
 from skimage.color import rgb2gray
 import numpy as np
-import utils
 import matplotlib.pyplot as plt
 from scipy import ndimage
 
-file_ext = '.tif'
-output_file_ext = '.png'
-
-def readImageGrayscaled(filename):
-	image = plt.imread(filename + file_ext)
-	image.shape
-	gray = rgb2gray(image)
-	return gray
-
 def produceContrasted1(filename):
-	gray = readImageGrayscaled(filename)
-	gray_r = gray.reshape(gray.shape[0]*gray.shape[1])
-	for i in range(gray_r.shape[0]):
-		if gray_r[i] > gray_r.mean():
-			gray_r[i] = 1
-		else:
-			gray_r[i] = 0
-	gray = gray_r.reshape(gray.shape[0],gray.shape[1])
-	plt.imshow(gray, cmap='gray')
-
-	io.imsave(filename + '_output1' + output_file_ext, gray)
-
-	return gray
+	gray = utils.readImageGrayscaled(filename)
+	processed = processing.produceContrast2Tone(gray)
+	utils.saveImage(filename + '_output1', processed)
+	return processed
 
 
 def produceContrasted2(filename):
-	gray = readImageGrayscaled(filename)
-	gray_r = gray.reshape(gray.shape[0]*gray.shape[1])
-	for i in range(gray_r.shape[0]):
-		if gray_r[i] > gray_r.mean():
-			gray_r[i] = 3
-		elif gray_r[i] > 0.5:
-			gray_r[i] = 2
-		elif gray_r[i] > 0.25:
-			gray_r[i] = 1
-		else:
-			gray_r[i] = 0
-	gray = gray_r.reshape(gray.shape[0],gray.shape[1])
-
-	io.imsave(filename + '_output2' + output_file_ext, gray)
-
-	return gray
-
-def circle_points(resolution, center, radius):
-    """
-    Generate points which define a circle on an image.Centre refers to the centre of the circle
-    """   
-    radians = np.linspace(0, 2*np.pi, resolution)
-    c = center[1] + radius*np.cos(radians)#polar co-ordinates
-    r = center[0] + radius*np.sin(radians)
-    
-    return np.array([c, r]).T
+	gray = utils.readImageGrayscaled(filename)
+	processed = processing.produceContrast3Tone(gray)
+	utils.saveImage(filename + '_output2', processed)
+	return processed
 
 
 def produceRandomWalkerSegmentation(filename, x, y, radius, contrastFn):
 	# Exclude last point because a closed path should not have duplicate points
-	points = circle_points(200, [y, x], radius)[:-1]
+	points = utils.circle_points(200, [y, x], radius)[:-1]
 
 	gray = contrastFn(filename)
 
@@ -84,7 +45,7 @@ def produceRandomWalkerSegmentation(filename, x, y, radius, contrastFn):
 
 	image_segmented = seg.random_walker(gray, image_labels)
 
-	io.imsave(filename + '_rand_walk_' + str(x) + '_' + str(y) + '_' + str(radius) + output_file_ext, image_segmented)
+	utils.saveImage(filename + '_rand_walk_' + str(x) + '_' + str(y) + '_' + str(radius), image_segmented)
 
 
 produceRandomWalkerSegmentation('sample4', 240, 200, 250, produceContrasted2)
