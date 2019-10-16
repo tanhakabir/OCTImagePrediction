@@ -20,11 +20,14 @@ from scipy import ndimage
 file_ext = '.tif'
 output_file_ext = '.png'
 
-def produceContrasted1(filename):
+def readImageGrayscaled(filename):
 	image = plt.imread(filename + file_ext)
 	image.shape
-
 	gray = rgb2gray(image)
+	return gray
+
+def produceContrasted1(filename):
+	gray = readImageGrayscaled(filename)
 	gray_r = gray.reshape(gray.shape[0]*gray.shape[1])
 	for i in range(gray_r.shape[0]):
 		if gray_r[i] > gray_r.mean():
@@ -40,10 +43,7 @@ def produceContrasted1(filename):
 
 
 def produceContrasted2(filename):
-	image = plt.imread(filename + file_ext)
-	image.shape
-
-	gray = rgb2gray(image)
+	gray = readImageGrayscaled(filename)
 	gray_r = gray.reshape(gray.shape[0]*gray.shape[1])
 	for i in range(gray_r.shape[0]):
 		if gray_r[i] > gray_r.mean():
@@ -87,7 +87,6 @@ def produceRandomWalkerSegmentation(filename, x, y, radius, contrastFn):
 	io.imsave(filename + '_rand_walk_' + str(x) + '_' + str(y) + '_' + str(radius) + output_file_ext, image_segmented)
 
 
-produceRandomWalkerSegmentation('sample', 240, 200, 250, produceContrasted2)
-produceRandomWalkerSegmentation('sample2', 240, 200, 250, produceContrasted2)
-produceRandomWalkerSegmentation('sample3', 240, 200, 250, produceContrasted2)
+produceRandomWalkerSegmentation('sample4', 240, 200, 250, produceContrasted2)
+produceRandomWalkerSegmentation('sample4', 240, 230, 250, produceContrasted2)
 
