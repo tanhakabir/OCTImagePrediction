@@ -2,6 +2,7 @@ import skimage
 import os
 import utils
 import processing
+import time
 
 from skimage import io
 
@@ -47,6 +48,24 @@ def produceRandomWalkerSegmentation(filename, x, y, radius, contrastFn):
 
 	utils.saveImage(filename + '_rand_walk_' + str(x) + '_' + str(y) + '_' + str(radius), image_segmented)
 
+def produceRandomWalkerSegmentation(filename, x, y, contrastFn):
+	gray = contrastFn(filename)
+
+	image_labels = np.zeros(gray.shape, dtype=np.uint8)
+	indices = draw.circle_perimeter(y, x, 5)#from here
+	image_labels[indices] = 1
+	image_labels[90,:] = 2
+	image_labels[300,:] = 2
+
+	image_segmented = seg.random_walker(gray, image_labels)
+
+	utils.saveImage(filename + '_rand_walk_band_' + str(x) + '_' + str(y), image_segmented)
+
+
+
+
+image = utils.readImageGrayscaled('sample')
+produceRandomWalkerSegmentation('sample', 250, 230, produceContrasted2)
 
 produceRandomWalkerSegmentation('sample4', 240, 200, 250, produceContrasted2)
 produceRandomWalkerSegmentation('sample4', 240, 230, 250, produceContrasted2)
