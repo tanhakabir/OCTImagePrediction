@@ -49,5 +49,14 @@ def produceRandomWalkerSegmentation(filename, x, y, contrastFn):
 
 
 image = utils.readImageGrayscaled('sample')
-produceRandomWalkerSegmentation('sample', 250, 230, produceContrasted2)
+produceRandomWalkerSegmentation('sample', 250, 250, produceContrasted2)
+
+image = utils.readImageGrayscaled('sample2')
+produceRandomWalkerSegmentation('sample2', 250, 250, produceContrasted2)
+
+image = utils.readImageGrayscaled('sample3')
+produceRandomWalkerSegmentation('sample3', 250, 250, produceContrasted2)
+
+image = utils.readImageGrayscaled('sample4')
+produceRandomWalkerSegmentation('sample4', 250, 250, produceContrasted2)
 
