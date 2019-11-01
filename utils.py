@@ -14,8 +14,17 @@ def readImageGrayscaled(filename):
         gray = rgb2gray(image)
         return gray
 
-def saveImage(filename, image):
-        io.imsave(filename + output_file_ext, image)
+def saveImage(sampleName, filename, image):
+        dir_seg = os.path.join('segmented')
+        if not os.path.exists(dir_seg):
+                os.mkdir(dir_seg)
+
+        dir_sample = os.path.join('segmented', sampleName)
+        if not os.path.exists(dir_sample):
+                os.mkdir(dir_sample)
+
+        path = os.path.join('segmented', sampleName, filename + output_file_ext);
+        io.imsave(path, image)
 
 
 def savefig(fname, verbose=True):
