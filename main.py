@@ -52,8 +52,8 @@ def produceRandomWalkerSegmentationNoContrast(filename):
 	utils.saveImageSegment(filename, 'original_gs', image)
 
 	markers = np.zeros(image.shape, dtype=np.uint8)
-	markers[image < 0.25] = 1
-	markers[image > 0.5] = 2
+	markers[image < 0.25] = 2
+	markers[image > 0.5] = 1
 
 	image_segmented = seg.random_walker(image, markers)
 	utils.saveImageSegment(filename, 'rand_walk_unsupervised', image_segmented)
@@ -74,6 +74,8 @@ files = os.listdir(path)
 print(files)
 
 for filename in files:
+	if os.path.splitext(filename)[1] != '.tif':
+		continue
 	produceRandomWalkerSegmentationNoContrast(os.path.splitext(filename)[0])
 
 
