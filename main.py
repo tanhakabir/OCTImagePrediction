@@ -48,8 +48,17 @@ def produceRandomWalkerSegmentation(filename):
 	print('saved ' + filename + '_rand_walk_band_' + str(RAND_WALK_X) + '_' + str(RAND_WALK_Y) + '_' + str(RAND_WALK_R))
 
 
-produceRandomWalkerSegmentation('sample')
-produceRandomWalkerSegmentation('sample2')
-produceRandomWalkerSegmentation('sample3')
-produceRandomWalkerSegmentation('sample4')
+# produceRandomWalkerSegmentation('sample')
+# produceRandomWalkerSegmentation('sample2')
+# produceRandomWalkerSegmentation('sample3')
+# produceRandomWalkerSegmentation('sample4')
+
+path = os.path.join('raw_images')
+files = os.listdir(path)
+
+print(files)
+
+for filename in files:
+	produceRandomWalkerSegmentation(os.path.splitext(filename)[0])
+
 

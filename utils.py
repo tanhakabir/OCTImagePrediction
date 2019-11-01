@@ -9,8 +9,8 @@ file_ext = '.tif'
 output_file_ext = '.png'
 
 def readImageGrayscaled(filename):
-        image = plt.imread(filename + file_ext)
-        image.shape
+        path = os.path.join('raw_images', filename + file_ext)
+        image = plt.imread(path)
         gray = rgb2gray(image)
         return gray
 
