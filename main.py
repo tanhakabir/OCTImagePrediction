@@ -47,6 +47,21 @@ def produceRandomWalkerSegmentation(filename):
 
 	print('saved ' + filename + '_rand_walk_band_' + str(RAND_WALK_X) + '_' + str(RAND_WALK_Y) + '_' + str(RAND_WALK_R))
 
+def produceRandomWalkerSegmentationNoContrast(filename):
+	image = utils.readImageGrayscaled(filename)
+	utils.saveImageSegment(filename, 'original_gs', image)
+
+	markers = np.zeros(image.shape, dtype=np.uint8)
+	markers[image < 0.25] = 1
+	markers[image > 0.5] = 2
+
+	image_segmented = seg.random_walker(image, markers)
+	utils.saveImageSegment(filename, 'rand_walk_unsupervised', image_segmented)
+
+	merged = image + image_segmented
+
+	utils.saveImageSegment(filename, 'merge_rand_walk_unsupervised', merged)
+	utils.saveImageSegmentResult(filename, 'rand_walk_unsupervised', merged)
 
 # produceRandomWalkerSegmentation('sample')
 # produceRandomWalkerSegmentation('sample2')
@@ -59,6 +74,6 @@ files = os.listdir(path)
 print(files)
 
 for filename in files:
-	produceRandomWalkerSegmentation(os.path.splitext(filename)[0])
+	produceRandomWalkerSegmentationNoContrast(os.path.splitext(filename)[0])
 
 
