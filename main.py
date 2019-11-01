@@ -37,26 +37,25 @@ def produceRandomWalkerSegmentation(filename, x, y, r, contrastFn):
 
 	image_labels = np.zeros(gray.shape, dtype=np.uint8)
 	indices_mid = draw.circle_perimeter(y, x, r)#from here
-	indices_right = draw.circle_perimeter(y, gray.shape[1] - (2 * r), r)#from here
 	image_labels[indices_mid] = 1
-	image_labels[indices_right] = 1
 	image_labels[90,:] = 2
 	image_labels[300,:] = 2
 
 	image_segmented = seg.random_walker(gray, image_labels)
 
 	utils.saveImage(filename + '_rand_walk_band_' + str(x) + '_' + str(y) + '_' + str(r), image_segmented)
+	print('saved ' + filename + '_rand_walk_band_' + str(x) + '_' + str(y) + '_' + str(r))
 
 
 image = utils.readImageGrayscaled('sample')
-produceRandomWalkerSegmentation('sample', 250, 200, 5, produceContrasted2)
+produceRandomWalkerSegmentation('sample', 250, 230, 20, produceContrasted2)
 
 image = utils.readImageGrayscaled('sample2')
-produceRandomWalkerSegmentation('sample2', 250, 200, 5, produceContrasted2)
+produceRandomWalkerSegmentation('sample2', 250, 230, 20, produceContrasted2)
 
 image = utils.readImageGrayscaled('sample3')
-produceRandomWalkerSegmentation('sample3', 250, 200, 5, produceContrasted2)
+produceRandomWalkerSegmentation('sample3', 250, 230, 20, produceContrasted2)
 
 image = utils.readImageGrayscaled('sample4')
-produceRandomWalkerSegmentation('sample4', 250, 200, 5, produceContrasted2)
+produceRandomWalkerSegmentation('sample4', 250, 220, 20, produceContrasted2)
 
