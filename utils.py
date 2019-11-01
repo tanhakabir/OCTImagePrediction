@@ -9,13 +9,34 @@ file_ext = '.tif'
 output_file_ext = '.png'
 
 def readImageGrayscaled(filename):
-        image = plt.imread(filename + file_ext)
-        image.shape
+        path = os.path.join('raw_images', filename + file_ext)
+        image = plt.imread(path)
         gray = rgb2gray(image)
         return gray
 
-def saveImage(filename, image):
-        io.imsave(filename + output_file_ext, image)
+def saveImageSegment(sampleName, filename, image):
+        dir_seg = os.path.join('segmented')
+        if not os.path.exists(dir_seg):
+                os.mkdir(dir_seg)
+
+        dir_sample = os.path.join('segmented', sampleName)
+        if not os.path.exists(dir_sample):
+                os.mkdir(dir_sample)
+
+        path = os.path.join('segmented', sampleName, filename + output_file_ext);
+        io.imsave(path, image)
+
+def saveImageSegmentResult(sampleName, strategyName, image):
+        dir_seg_re = os.path.join('segmentation_results')
+        if not os.path.exists(dir_seg_re):
+                os.mkdir(dir_seg_re)
+
+        dir_strat = os.path.join('segmentation_results', strategyName)
+        if not os.path.exists(dir_strat):
+                os.mkdir(dir_strat)
+
+        path = os.path.join('segmentation_results', strategyName, sampleName + output_file_ext);
+        io.imsave(path, image)
 
 
 def savefig(fname, verbose=True):
