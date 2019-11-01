@@ -25,11 +25,11 @@ RAND_WALK_R = 10
 
 def produceRandomWalkerSegmentation(filename):
 	image = utils.readImageGrayscaled(filename)
-	utils.saveImage(filename, 'original_gs', image)
+	utils.saveImageSegment(filename, 'original_gs', image)
 	og = utils.readImageGrayscaled(filename)
 
 	processed = processing.produceContrast3Tone(image)
-	utils.saveImage(filename, 'contrast_3_tone_processed', processed)
+	utils.saveImageSegment(filename, 'contrast_3_tone_processed', processed)
 
 	image_labels = np.zeros(processed.shape, dtype=np.uint8)
 	indices_mid = draw.circle_perimeter(RAND_WALK_Y, RAND_WALK_X, RAND_WALK_R) #from here
@@ -38,11 +38,12 @@ def produceRandomWalkerSegmentation(filename):
 	image_labels[300,:] = 2
 
 	image_segmented = seg.random_walker(processed, image_labels)
-	utils.saveImage(filename, 'rand_walk_band_' + str(RAND_WALK_X) + '_' + str(RAND_WALK_Y) + '_' + str(RAND_WALK_R), image_segmented);
+	utils.saveImageSegment(filename, 'rand_walk_band_' + str(RAND_WALK_X) + '_' + str(RAND_WALK_Y) + '_' + str(RAND_WALK_R), image_segmented)
 
 	merged = og + image_segmented
 
-	utils.saveImage(filename, 'merge_rand_walk_band_' + str(RAND_WALK_X) + '_' + str(RAND_WALK_Y) + '_' + str(RAND_WALK_R), merged);
+	utils.saveImageSegment(filename, 'merge_rand_walk_band_' + str(RAND_WALK_X) + '_' + str(RAND_WALK_Y) + '_' + str(RAND_WALK_R), merged)
+	utils.saveImageSegmentResult(filename, 'rand_walk_band_' + str(RAND_WALK_X) + '_' + str(RAND_WALK_Y) + '_' + str(RAND_WALK_R), merged)
 
 	print('saved ' + filename + '_rand_walk_band_' + str(RAND_WALK_X) + '_' + str(RAND_WALK_Y) + '_' + str(RAND_WALK_R))
 
