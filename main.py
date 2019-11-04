@@ -19,6 +19,12 @@ import numpy as np
 import matplotlib.pyplot as plt
 from scipy import ndimage
 
+from skimage.morphology import erosion, dilation, opening, closing, white_tophat
+from skimage.morphology import black_tophat, skeletonize, convex_hull_image
+from skimage.morphology import disk
+
+from PIL import Image
+
 RAND_WALK_X = 250
 RAND_WALK_Y = 240
 RAND_WALK_R = 10
@@ -63,10 +69,26 @@ def produceRandomWalkerSegmentationNoContrast(filename):
 	utils.saveImageSegment(filename, 'merge_rand_walk_unsupervised', merged)
 	utils.saveImageSegmentResult(filename, 'rand_walk_unsupervised', merged)
 
-# produceRandomWalkerSegmentation('sample')
-# produceRandomWalkerSegmentation('sample2')
-# produceRandomWalkerSegmentation('sample3')
-# produceRandomWalkerSegmentation('sample4')
+
+def produceMorphologicalFiltering(filename):
+	image = utils.readImageGrayscaled(filename)
+	utils.saveImageSegment(filename, 'original_gs', image)
+
+	selem = disk(6)
+	eroded = erosion(image, selem)
+
+	eroded_dilated = dilation(eroded, selem)
+
+	edges = canny(eroded_dilated)
+
+	closed = closing(edges, selem)
+
+	# utils.saveImageSegment(filename, 'morph_filtered', closed)
+
+	merged = image + closed
+
+	utils.saveImageSegment(filename, 'merge_morph_filtered', merged)
+	utils.saveImageSegmentResult(filename, 'morph_filtered', merged)
 
 path = os.path.join('raw_images')
 files = os.listdir(path)
@@ -76,6 +98,6 @@ print(files)
 for filename in files:
 	if os.path.splitext(filename)[1] != '.tif':
 		continue
-	produceRandomWalkerSegmentationNoContrast(os.path.splitext(filename)[0])
+	produceMorphologicalFiltering(os.path.splitext(filename)[0])
 
 
